@@ -8,14 +8,15 @@ import {
   Settings,
 } from "lucide-react";
 import { useMediaQuery } from "usehooks-ts";
-import { useMutation, useQuery } from "convex/react";
+import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
+import { toast } from "sonner";
 
 import { UserItem } from "./user-item";
 import { Item } from "./item";
+import { DocumentList } from "./document-list";
 
 import { cn } from "@/lib/utils";
-import { toast } from "sonner";
 
 export const Navigation = () => {
   const pathname = usePathname();
@@ -28,7 +29,6 @@ export const Navigation = () => {
   const [isResetting, setIsResetting] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(isMobile);
 
-  const documents = useQuery(api.documents.get);
   const create = useMutation(api.documents.create);
 
   useEffect(() => {
@@ -145,9 +145,7 @@ export const Navigation = () => {
           <Item label="New page" icon={PlusCircle} onClick={handleCreate} />
         </div>
         <div className="mt-4">
-          {documents?.map((document) => (
-            <p key={document._id}>{document.title}</p>
-          ))}
+          <DocumentList />
         </div>
         <div
           onMouseDown={handleMouseDown}
