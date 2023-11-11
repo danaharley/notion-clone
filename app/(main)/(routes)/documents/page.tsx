@@ -1,12 +1,28 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { useUser } from "@clerk/clerk-react";
-import { PlusCircle } from "lucide-react";
 import Image from "next/image";
+import { useMutation } from "convex/react";
+import { useUser } from "@clerk/clerk-react";
+import { api } from "@/convex/_generated/api";
+import { PlusCircle } from "lucide-react";
+
+import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
 const DocumentsPage = () => {
   const { user } = useUser();
+
+  const create = useMutation(api.documents.create);
+
+  const onCreate = () => {
+    const promise = create({ title: "Untitled" });
+
+    toast.promise(promise, {
+      loading: "Creating a new note..",
+      success: "New note created!",
+      error: "Failed to create a new note.",
+    });
+  };
 
   return (
     <div className="flex h-full flex-col items-center justify-center space-y-4">
@@ -26,7 +42,7 @@ const DocumentsPage = () => {
       />
 
       <h2>Welcome to {user?.firstName}&apos;s Notion</h2>
-      <Button>
+      <Button onClick={onCreate}>
         <PlusCircle className="mr-2 h-4 w-4" /> Create a note
       </Button>
     </div>
