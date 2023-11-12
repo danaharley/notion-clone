@@ -35,7 +35,7 @@ interface ItemProps {
   level?: number;
   label: string;
   icon: LucideIcon;
-  onClick: () => void;
+  onClick?: () => void;
   onExpand?: () => void;
 }
 
