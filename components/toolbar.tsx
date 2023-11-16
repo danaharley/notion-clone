@@ -10,6 +10,8 @@ import { ImageIcon, Smile, X } from "lucide-react";
 import { IconPicker } from "./icon-picker";
 import { Button } from "./ui/button";
 
+import { useCoverImage } from "@/hooks/use-cover-image";
+
 interface ToolbarProps {
   initialData: Doc<"documents">;
   preview?: boolean;
@@ -22,6 +24,8 @@ export const Toolbar: React.FC<ToolbarProps> = ({ initialData, preview }) => {
 
   const update = useMutation(api.documents.update);
   const removeIcon = useMutation(api.documents.removeIcon);
+
+  const coverImage = useCoverImage();
 
   const enableInput = () => {
     if (preview) return;
@@ -97,17 +101,15 @@ export const Toolbar: React.FC<ToolbarProps> = ({ initialData, preview }) => {
           </IconPicker>
         )}
         {!initialData.coverImage && !preview && (
-          <IconPicker asChild onChange={() => {}}>
-            <Button
-              variant="outline"
-              size="sm"
-              className="text-xs text-muted-foreground"
-              onClick={() => {}}
-            >
-              <ImageIcon className="mr-2 h-4 w-4" />
-              Add cover
-            </Button>
-          </IconPicker>
+          <Button
+            variant="outline"
+            size="sm"
+            className="text-xs text-muted-foreground"
+            onClick={coverImage.onOpen}
+          >
+            <ImageIcon className="mr-2 h-4 w-4" />
+            Add cover
+          </Button>
         )}
       </div>
       {isEditing && !preview ? (
